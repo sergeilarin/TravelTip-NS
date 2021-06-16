@@ -5,7 +5,7 @@ export const mapService = {
     initMap,
     addMarker,
     panTo,
-    getlocetion
+    getlocetion,
 }
 
 const API_KEY = 'AIzaSyCCDS3tCCPJQoWT-ZNIBLHdpHAajIqke_o';
@@ -38,9 +38,18 @@ function addMarker(loc) {
         map: gMap,
         title: 'Hello World!'
     });
-    console.log({ marker });
     return marker;
 }
+
+// function removeMark(loc){
+//     // var map = new google.Map
+//     setMapOnAll(loc);
+// }
+// function setMapOnAll(map) {
+//     for (let i = 0; i < markers.length; i++) {
+//       markers[i].setMap(map);
+//     }
+//   }
 
 function panTo(lat, lng, address) {
     const place = {

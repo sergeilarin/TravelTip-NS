@@ -9,6 +9,7 @@ window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
 window.onRemoveloc = onRemoveloc
 window.onGoloc = onGoloc
+window.onGetPosition = onGetPosition
 
 function onInit() {
     renderLocsTab()
@@ -55,15 +56,26 @@ function renderLocsTab() {
                  <td>${loc.lat}</td>
                  <td>${loc.lng}</td>
                  <td> <button class="go" type="button" onclick="onGoloc('${loc.lat}','${loc.lng}')">Go</button></td>
-                 <td> <button class="delete" type="button" onclick="onRemoveloc('${loc.id}')">Delete</button></td>
+                 <td> <button class="delete" type="button" onclick="onRemoveloc('${loc.id}','${loc}')">Delete</button></td>
                      </tr>`
     })
     document.querySelector('.tabel').innerHTML = strHTML + strHTMLS.join('')
 }
 
+function onGetPosition() {
+    getPosition()
+}
+
+function showLocation(position) {
+    console.log(position);
+    mapService.initMap(position.coords.latitude, position.coords.longitude)
+    mapService.addMarker({ lat: position.coords.latitude, lng: position.coords.longitude })
+}
+
 function onGoloc(lat,lng) {
-    mapService.initMap( lat, lng )
     console.log(lat, lng, 'locs');
+    mapService.initMap(lat,lng)
+    mapService.addMarker(lat,lng)
 }
 
 function onRemoveloc(locId) {
@@ -74,16 +86,18 @@ function onRemoveloc(locId) {
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
 function getPosition() {
+    if (!navigator.geolocation) {
+        alert("HTML5 Geolocation is not supported in your browser.");
+        return;
+    }
     console.log('Getting Pos');
     return new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject)
     })
+    .then(showLocation)
 }
 
-// function onAddMarker() {
-//     console.log('Adding a marker');
-//     mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 });
-// }
+
 
 function onGetLocs() {
     locService.getLocs()
@@ -109,8 +123,5 @@ function onPanTo(ev) {
     console.log('Panning the Map');
     const elInputSearch = document.querySelector('input[name=search]');
     mapService.getlocetion(elInputSearch.value)
-        .then(res => console.log(res))
-
-    // wikiTubeService.getVideos(elInputSearch.value)
-    // mapService.panTo(35.6895, 139.6917);
+    console.log(elInputSearch.value);
 }
