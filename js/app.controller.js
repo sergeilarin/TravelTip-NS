@@ -25,13 +25,14 @@ function onInit() {
                         latitude,
                         longitude
                     }
-                    
+
                 }
+                mapService.addMarker({ lat: latitude, lng: longitude })
                 console.log(place);
                 locService.addLoc(place)
-            console.log('Map is ready');
-        }) 
-    })
+                console.log('Map is ready');
+            })
+        })
         .catch(() => console.log('Error: cannot init map'));
 }
 
@@ -72,6 +73,8 @@ function onPanTo(ev) {
     console.log('Panning the Map');
     const elInputSearch = document.querySelector('input[name=search]');
     mapService.getlocetion(elInputSearch.value)
+        .then(res => console.log(res))
+
     // wikiTubeService.getVideos(elInputSearch.value)
     // mapService.panTo(35.6895, 139.6917);
 }
