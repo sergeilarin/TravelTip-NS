@@ -24,7 +24,6 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                 zoom: 13
             })
 
-            console.log('Map!', gMap);
             return gMap
         })
 
@@ -38,7 +37,6 @@ function addMarker(loc) {
         map: gMap,
         title: 'Hello World!'
     });
-    console.log({ marker });
     return marker;
 }
 

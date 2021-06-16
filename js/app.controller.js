@@ -27,7 +27,7 @@ function onInit() {
                     lat: latitude,
                     lng: longitude
                 }
-               
+
                 mapService.addMarker({ lat: latitude, lng: longitude });
                 locService.addLoc(place)
                 renderLocsTab()
@@ -48,7 +48,6 @@ function renderLocsTab() {
         <th  class="th">Delete</th>
         </tr>`;
     var strHTMLS = locs.map(loc => {
-        console.log(loc, 'loc');
         return `<tr>
                  <td>${loc.name}</td>
                  <td>${loc.id}</td>
@@ -61,8 +60,8 @@ function renderLocsTab() {
     document.querySelector('.tabel').innerHTML = strHTML + strHTMLS.join('')
 }
 
-function onGoloc(lat,lng) {
-    mapService.initMap( lat, lng )
+function onGoloc(lat, lng) {
+    mapService.initMap(lat, lng)
     console.log(lat, lng, 'locs');
 }
 
@@ -79,11 +78,6 @@ function getPosition() {
         navigator.geolocation.getCurrentPosition(resolve, reject)
     })
 }
-
-// function onAddMarker() {
-//     console.log('Adding a marker');
-//     mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 });
-// }
 
 function onGetLocs() {
     locService.getLocs()
@@ -109,7 +103,8 @@ function onPanTo(ev) {
     console.log('Panning the Map');
     const elInputSearch = document.querySelector('input[name=search]');
     mapService.getlocetion(elInputSearch.value)
-        .then(res => console.log(res))
+        .then(renderLocsTab)
+
 
     // wikiTubeService.getVideos(elInputSearch.value)
     // mapService.panTo(35.6895, 139.6917);
