@@ -3,9 +3,11 @@
 export const mapService = {
     initMap,
     addMarker,
-    panTo
+    panTo,
+    getlocetion
 }
 
+const API_KEY = 'AIzaSyCCDS3tCCPJQoWT-ZNIBLHdpHAajIqke_o';
 var gMap;
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
@@ -40,7 +42,6 @@ function panTo(lat, lng) {
 
 function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
-    const API_KEY = ''; //TODO: Enter your API Key
     var elGoogleApi = document.createElement('script');
     elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`;
     elGoogleApi.async = true;
@@ -50,4 +51,29 @@ function _connectGoogleApi() {
         elGoogleApi.onload = resolve;
         elGoogleApi.onerror = () => reject('Google script failed to load')
     })
+}
+
+function getlocetion(address) {
+    // const termVideosMap = storageService.load(KEY) || {};
+    // if (termVideosMap[address]) return Promise.resolve(termVideosMap[address]);
+
+    console.log('Getting from Network');
+
+    return axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${API_KEY}`)
+        .then(res => console.log(res.data))
+        .then(ytVideos => ytVideos.map(ytVideo => ({
+            id: ytVideo.id.videoId,
+            title: ytVideo.snippet.title,
+            img: {
+                url: ytVideo.snippet.thumbnails.default.url,
+                width: ytVideo.snippet.thumbnails.default.width,
+                height: ytVideo.snippet.thumbnails.default.height,
+            }
+        })))
+        .then(videos => {
+            termVideosMap[address] = videos;
+            storageService.save(KEY, termVideosMap)
+            return videos;
+        })
+
 }

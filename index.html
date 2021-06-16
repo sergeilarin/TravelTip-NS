@@ -3,10 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/main.css">
     <title>TravelTip</title>
 </head>
 <body>
-    <h1>TravelTip Starter</h1>
+    <header>
+        <h2>TravelTip</h2>
+        <nav>
+            <form onsubmit="onPanTo(event)">
+                <input type="text" name="search" placeholder="write locetion" value="">
+                <button>Go</button>
+            </form>
+        </nav>
+    </header>
     <div id="map" style="width: 100%; height: 400px;"></div>
     <button onclick="onAddMarker()" class="btn-add-marker">Add Marker Speific Location</button>
     <button onclick="onGetUserPos()" class="btn-user-pos">Get User Position</button>
@@ -17,6 +26,7 @@
     <p>Locations: <span class="locs"></span></p>
     
 
+    <script src="./lib.js/axios.js"></script>
     <script type="module" src="js/app.controller.js"></script>
 </body>
 </html>

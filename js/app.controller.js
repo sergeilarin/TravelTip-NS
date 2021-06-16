@@ -47,7 +47,11 @@ function onGetUserPos() {
             console.log('err!!!', err);
         })
 }
-function onPanTo() {
+function onPanTo(ev) {
+    ev.preventDefault()
     console.log('Panning the Map');
-    mapService.panTo(35.6895, 139.6917);
+    const elInputSearch = document.querySelector('input[name=search]');
+    mapService.getlocetion(elInputSearch.value)
+    // wikiTubeService.getVideos(elInputSearch.value)
+    // mapService.panTo(35.6895, 139.6917);
 }
