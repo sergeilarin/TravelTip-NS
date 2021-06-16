@@ -13,6 +13,7 @@ var gMap;
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
     console.log('InitMap');
+    console.log(lat, lng, 'locs');
     return _connectGoogleApi()
         .then(() => {
             console.log('google available');
