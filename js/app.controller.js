@@ -7,34 +7,70 @@ window.onload = onInit;
 window.onPanTo = onPanTo;
 window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
+window.onRemoveloc = onRemoveloc
+window.onGoloc = onGoloc
 
 function onInit() {
+    renderLocsTab()
     mapService.initMap()
         .then((map) => {
             map.addListener('click', (event) => {
-                console.log('event', event);
                 var { lat, lng } = event.latLng
                 var latitude = lat();
                 var longitude = lng();
                 var place = {
                     id: utilService.makeId(),
+                    name: 'yallaa',
                     // name: prompt('The name of the place:') ,
                     createdAt: Date.now(),
                     updatedAt: Date.now(),
-                    coords: {
-                        latitude,
-                        longitude
-                    }
-
+                    lat: latitude,
+                    lng: longitude
                 }
-                mapService.addMarker({ lat: latitude, lng: longitude })
-                console.log(place);
+               
+                mapService.addMarker({ lat: latitude, lng: longitude });
                 locService.addLoc(place)
-                console.log('Map is ready');
+                renderLocsTab()
             })
+
         })
         .catch(() => console.log('Error: cannot init map'));
 }
+
+function renderLocsTab() {
+    const locs = locService.arrLocs()
+    var strHTML = `<tr>
+        <th class="th">Place name</th>
+        <th  class="th">Id</th>
+        <th  class="th">latitude</th>
+        <th  class="th">longitude</th>
+        <th  class="th">Go</th>
+        <th  class="th">Delete</th>
+        </tr>`;
+    var strHTMLS = locs.map(loc => {
+        console.log(loc, 'loc');
+        return `<tr>
+                 <td>${loc.name}</td>
+                 <td>${loc.id}</td>
+                 <td>${loc.lat}</td>
+                 <td>${loc.lng}</td>
+                 <td> <button class="go" type="button" onclick="onGoloc('${loc.lat}','${loc.lng}')">Go</button></td>
+                 <td> <button class="delete" type="button" onclick="onRemoveloc('${loc.id}')">Delete</button></td>
+                     </tr>`
+    })
+    document.querySelector('.tabel').innerHTML = strHTML + strHTMLS.join('')
+}
+
+function onGoloc(lat,lng) {
+    mapService.initMap( lat, lng )
+    console.log(lat, lng, 'locs');
+}
+
+function onRemoveloc(locId) {
+    locService.removeloc(locId)
+    renderLocsTab()
+}
+
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
 function getPosition() {
