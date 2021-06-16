@@ -8,7 +8,7 @@ export const locService = {
     removeloc
 }
  const gLocs = []
- 
+
 function arrLocs(){
    return gLocs
 }
