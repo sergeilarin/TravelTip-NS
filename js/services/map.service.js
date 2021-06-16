@@ -10,6 +10,7 @@ export const mapService = {
 const API_KEY = 'AIzaSyCCDS3tCCPJQoWT-ZNIBLHdpHAajIqke_o';
 var gMap;
 
+
 function initMap(lat = 32.0749831, lng = 34.9120554) {
     console.log('InitMap');
     return _connectGoogleApi()
@@ -20,9 +21,13 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                 center: { lat, lng },
                 zoom: 15
             })
+
             console.log('Map!', gMap);
+            return gMap
         })
+
 }
+
 
 function addMarker(loc) {
     var marker = new google.maps.Marker({
@@ -30,6 +35,7 @@ function addMarker(loc) {
         map: gMap,
         title: 'Hello World!'
     });
+    console.log({ marker });
     return marker;
 }
 

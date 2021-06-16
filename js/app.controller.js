@@ -1,17 +1,37 @@
 import { locService } from './services/loc.service.js'
 import { mapService } from './services/map.service.js'
+import { utilService } from './services/utilService.js'
 
 window.onload = onInit;
-window.onAddMarker = onAddMarker;
+// window.onAddMarker = onAddMarker;
 window.onPanTo = onPanTo;
 window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
 
 function onInit() {
     mapService.initMap()
-        .then(() => {
+        .then((map) => {
+            map.addListener('click', (event) => {
+                console.log('event', event);
+                var { lat, lng } = event.latLng
+                var latitude = lat();
+                var longitude = lng();
+                var place = {
+                    id: utilService.makeId(),
+                    // name: prompt('The name of the place:') ,
+                    createdAt: Date.now(),
+                    updatedAt: Date.now(),
+                    coords: {
+                        latitude,
+                        longitude
+                    }
+                    
+                }
+                console.log(place);
+                locService.addLoc(place)
             console.log('Map is ready');
-        })
+        }) 
+    })
         .catch(() => console.log('Error: cannot init map'));
 }
 
@@ -23,10 +43,10 @@ function getPosition() {
     })
 }
 
-function onAddMarker() {
-    console.log('Adding a marker');
-    mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 });
-}
+// function onAddMarker() {
+//     console.log('Adding a marker');
+//     mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 });
+// }
 
 function onGetLocs() {
     locService.getLocs()
